@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="3D Cube - For Crush | Responsive">
+    <title>3D Image Cube | SurajNirala</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow: hidden;
+            height: 100%;
+            background: linear-gradient(rgb(245 69 69 / 77%), rgb(255 39 205 / 84%)), 
+                        linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 3vw, 30px);
+            padding: 20px;
+			background: url(Assets/background.jpg);
+        }
+
+        .title {
+            color: rgb(238, 255, 255);
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: clamp(2px, 1vw, 11px);
+            text-transform: uppercase;
+            margin-bottom: clamp(150px, 10vw, 20px);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); }
+            to { text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8); }
+        }
+
+        .cube-container {
+            perspective: 800px;
+            perspective-origin: center center;
+        }
+
+        .cube {
+            position: relative;
+            margin: 0 auto;
+            width: clamp(150px, 40vw, 200px);
+            height: clamp(150px, 40vw, 200px);
+            transform: rotateX(-30deg) rotateY(-80deg);
+            transform-style: preserve-3d;
+            animation: rotate 15s infinite linear;
+        }
+
+        .cube .outer-cube,
+        .cube .inner-cube {
+            transform-style: preserve-3d;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateX(-30deg) rotateY(-80deg);
+            }
+            to {
+                transform: rotateX(330deg) rotateY(280deg);
+            }
+        }
+
+        /* Outer cube styles */
+        .outer-cube .outer-top,
+        .outer-cube .outer-bottom,
+        .outer-cube .outer-right,
+        .outer-cube .outer-left,
+        .outer-cube .outer-front,
+        .outer-cube .outer-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: clamp(135px, 36vw, 180px);
+            height: clamp(150px, 40vw, 200px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            opacity: 0.4;
+            transition: all 0.9s ease;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(1px);
+        }
+
+        .outer-cube img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .outer-top {
+            transform: rotateX(90deg) translateZ(calc(clamp(150px, 40vw, 200px) / 2));
+        }
+
+        .outer-bottom {
+            transform: rotateX(-90deg) translateZ(calc(clamp(150px, 40vw, 200px) / 2));
+        }
+
+        .outer-front {
+            transform: rotateY(0deg) translateZ(calc(clamp(150px, 40vw, 200px) / 2));
+        }
+
+        .outer-back {
+            transform: translateZ(calc(-1 * clamp(150px, 40vw, 200px) / 2)) rotateY(180deg);
+        }
+
+        .outer-left {
+            transform: rotateY(90deg) translateZ(calc(clamp(150px, 40vw, 200px) / 2));
+        }
+
+        .outer-right {
+            transform: rotateY(-90deg) translateZ(calc(clamp(150px, 40vw, 200px) / 2));
+        }
+
+        /* Inner cube styles */
+        .inner-cube > div {
+            position: absolute;
+            top: clamp(26px, 7vw, 35px);
+            left: clamp(26px, 7vw, 35px);
+            width: clamp(98px, 26vw, 130px);
+            height: clamp(98px, 26vw, 130px);
+        }
+
+        .inner-cube img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .inner-top {
+            transform: rotateX(90deg) translateZ(calc(clamp(98px, 26vw, 130px) / 2));
+        }
+
+        .inner-bottom {
+            transform: rotateX(-90deg) translateZ(calc(clamp(98px, 26vw, 130px) / 2));
+        }
+
+        .inner-front {
+            transform: rotateY(0deg) translateZ(calc(clamp(98px, 26vw, 130px) / 2));
+        }
+
+        .inner-back {
+            transform: translateZ(calc(-1 * clamp(98px, 26vw, 130px) / 2)) rotateY(180deg);
+        }
+
+        .inner-left {
+            transform: rotateY(90deg) translateZ(calc(clamp(98px, 26vw, 130px) / 2));
+        }
+
+        .inner-right {
+            transform: rotateY(-90deg) translateZ(calc(clamp(98px, 26vw, 130px) / 2));
+        }
+
+        /* Hover effects */
+        .cube:hover .outer-top,
+        .cube:hover .outer-bottom,
+        .cube:hover .outer-front,
+        .cube:hover .outer-back,
+        .cube:hover .outer-left,
+        .cube:hover .outer-right {
+            opacity: 0.8;
+            transform-origin: center;
+        }
+
+        .cube:hover .outer-top {
+            transform: rotateX(90deg) translateZ(calc(clamp(150px, 40vw, 200px)));
+        }
+
+        .cube:hover .outer-bottom {
+            transform: rotateX(-90deg) translateZ(calc(clamp(150px, 40vw, 200px)));
+        }
+
+        .cube:hover .outer-front {
+            transform: rotateY(0deg) translateZ(calc(clamp(150px, 40vw, 200px)));
+        }
+
+        .cube:hover .outer-back {
+            transform: translateZ(calc(-1 * clamp(150px, 40vw, 200px))) rotateY(180deg);
+        }
+
+        .cube:hover .outer-left {
+            transform: rotateY(90deg) translateZ(calc(clamp(150px, 40vw, 200px)));
+        }
+
+        .cube:hover .outer-right {
+            transform: rotateY(-90deg) translateZ(calc(clamp(150px, 40vw, 200px)));
+        }
+
+        #copy {
+            position: fixed;
+            bottom: clamp(10px, 3vw, 20px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            text-align: center;
+        }
+
+        #copy p {
+            color: #fff6f9;
+            font-weight: 700;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        #copy a {
+            text-decoration: none;
+            color: #ffeb3b;
+            transition: color 0.3s ease;
+        }
+
+        #copy a:hover {
+            color: #ff9800;
+        }
+
+        .tip {
+            position: fixed;
+            bottom: clamp(50px, 8vw, 80px);
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            padding: 0 20px;
+        }
+
+        /* Touch devices optimization */
+        @media (hover: none) and (pointer: coarse) {
+            .cube {
+                animation: rotate 10s infinite linear, mobilePulse 4s ease-in-out infinite alternate;
+            }
+            
+            @keyframes mobilePulse {
+                from { transform: rotateX(-30deg) rotateY(-80deg) scale(0.95); }
+                to { transform: rotateX(-30deg) rotateY(-80deg) scale(1.05); }
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .cube-container {
+                perspective: 600px;
+            }
+            
+            .title {
+                margin-bottom: 20px;
+            }
+            
+            .tip {
+                bottom: 60px;
+                font-size: 0.9rem;
+                padding: 0 15px;
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 1200px) {
+            .cube-container {
+                perspective: 1000px;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media (orientation: landscape) and (max-height: 600px) {
+            body {
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            .title {
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                margin: 0;
+            }
+            
+            .tip {
+                right: 20px;
+                bottom: 20px;
+                left: auto;
+                transform: none;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        ASHU 💗
+    </div>
+
+    <div class="cube-container">
+        <div class="cube">
+            <div class="outer-cube">
+                <div class="outer-top">
+                    <img src="Assets/ashu.jpg" alt="Photo 1" />
+                </div>
+                <div class="outer-bottom">
+                    <img src="Assets/ashu4.jpg" alt="Photo 2" />
+                </div>
+                <div class="outer-front">
+                    <img src="Assets/ashu5.jpg" alt="Photo 3" />
+                </div>
+                <div class="outer-back">
+                    <img src="Assets/ashu6.jpg" alt="Photo 4" />
+                </div>
+                <div class="outer-left">
+                    <img src="Assets/suraj.jpg" alt="Photo 5" />
+                </div>
+                <div class="outer-right">
+                    <img src="Assets/suraj1.jpg" alt="Photo 6" />
+                </div>
+            </div>
+            
+            <div class="inner-cube">
+                <div class="inner-top">
+                    <img src="Assets/ashu8.jpg" alt="Photo 7" />
+                </div>
+                <div class="inner-bottom">
+                    <img src="Assets/suraj2.jpg" alt="Photo 8" />
+                </div>
+                <div class="inner-front">
+                    <img src="Assets/suraj3.jpg" alt="Photo 9" />
+                </div>
+                <div class="inner-back">
+                    <img src="Assets/suraj8.jpg" alt="Photo 10" />
+                </div>
+                <div class="inner-left">
+                    <img src="Assets/IMG-20250308-WA0079.jpg" alt="Photo 11" />
+                </div>
+                <div class="inner-right">
+                    <img src="Assets/IMG-20250308-WA0080.jpg" alt="Photo 12" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tip">
+        Hover over the cube to see the magic effect! ✨
+    </div>
+    
+    <div id="copy">
+        <p>Made with ❤️ by <a href="https://www.instagram.com/_surajnirala_" target="_blank">@_surajnirala_</a></p>
+    </div>
+</body>
+
+</html>
